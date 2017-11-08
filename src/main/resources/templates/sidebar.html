@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh">
+
+<body>
+
+<!-- sidebar -->
+<div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+        <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+        <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+        <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+</div>
+
+<aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+        <section class="site-overview sidebar-panel  sidebar-panel-active ">
+            <div class="site-author motion-element" itemprop="author" itemscope=""
+                 itemtype="http://schema.org/Person">
+                <img class="site-author-image" itemprop="image"
+                     src="/res/images/who.jpg"
+                     alt="GQB1226"/>
+                <p class="site-author-name" itemprop="name">GQB1226</p>
+                <p class="site-description motion-element" itemprop="description">以梦为马，不负韶华<br/>
+                </p>
+            </div>
+            <nav class="site-state motion-element">
+                <div class="site-state-item site-state-posts">
+                    <a href="/">
+                        <span class="site-state-item-count" th:text="${articleTotal}"></span>
+                        <span class="site-state-item-name">日志</span>
+                    </a>
+                </div>
+                <div class="site-state-item site-state-categories">
+                    <a href="/">
+                        <span class="site-state-item-count" th:text="${categoryTotal}"></span>
+                        <span class="site-state-item-name">分类</span>
+                    </a>
+                </div>
+                <div class="site-state-item site-state-tags">
+                    <a href="/">
+                        <span class="site-state-item-count" th:text="${tagTotal}"></span>
+                        <span class="site-state-item-name">标签</span>
+                    </a>
+                </div>
+            </nav>
+            <div class="links-of-author motion-element">
+                <p class="site-author-name">Links</p>
+				<span class="links-of-author-item">
+				  <a href="http://hexo.io/" target="_blank">Hexo</a>
+				</span>
+				<span class="links-of-author-item">
+				  <a href="https://github.com/iissnan/hexo-theme-next" target="_blank">NexT.Mist</a>
+				</span>
+            </div>
+        </section>
+    </div>
+</aside>
+</body>
+</html>

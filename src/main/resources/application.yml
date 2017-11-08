@@ -1,0 +1,17 @@
+security:
+  basic:
+    enabled: true
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/blog
+    username: root
+    password: 1226
+    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  thymeleaf:
+    mode: HTML5
+server:
+  port: 8080
