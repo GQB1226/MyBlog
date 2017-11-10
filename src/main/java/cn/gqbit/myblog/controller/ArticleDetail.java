@@ -35,6 +35,9 @@ public class ArticleDetail {
         int categoryCount = categoryService.getTotal();
         int tagCount = tagService.getTotal();
 
+        //增加阅读次数记录
+        articleService.readCountAdd(articleId);
+
         model.addAttribute("articleTotal", articleCount);
         model.addAttribute("categoryTotal", categoryCount);
         model.addAttribute("tagTotal", tagCount);

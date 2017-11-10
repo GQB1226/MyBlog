@@ -7,6 +7,7 @@ import cn.gqbit.myblog.entity.Tag;
 import cn.gqbit.myblog.service.IArticleService;
 import cn.gqbit.myblog.service.ICategoryService;
 import cn.gqbit.myblog.service.ITagService;
+import cn.gqbit.myblog.utils.QiniuPicUpload;
 import cn.gqbit.myblog.utils.ResultInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,12 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequestMapping("/admin/article")
@@ -35,6 +37,9 @@ public class EditArticle {
 
     @Autowired
     ITagService tagService;
+
+    @Autowired
+    QiniuPicUpload qiniuPicUpload;
 
 
     private SimpleDateFormat dateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -148,33 +153,34 @@ public class EditArticle {
 
     /**
      * 文章修改
+     *
      * @param model
      * @param id
      * @return
      */
-    @RequestMapping(value = "/editJump",method = RequestMethod.GET)
-    public String editArticle(Model model,Integer id){
-        Article article= articleService.loadArticleByAId(id);
-        if(article!=null){
-            model.addAttribute("article",article);
+    @RequestMapping(value = "/editJump", method = RequestMethod.GET)
+    public String editArticle(Model model, Integer id) {
+        Article article = articleService.loadArticleByAId(id);
+        if (article != null) {
+            model.addAttribute("article", article);
         }
         return "admin/article/articleEdit";
     }
 
-    @RequestMapping(value = "/updateInfo",method = RequestMethod.GET)
-    public String updateArticleInfo(Model model,@RequestParam(value = "articleId") Integer articleId){
-        Article article=articleService.loadArticleByAId(articleId);
+    @RequestMapping(value = "/updateInfo", method = RequestMethod.GET)
+    public String updateArticleInfo(Model model, @RequestParam(value = "articleId") Integer articleId) {
+        Article article = articleService.loadArticleByAId(articleId);
         List<Category> categoryList = categoryService.listAllCategory();
         List<Tag> tagList = tagService.listAllTag();
-        model.addAttribute("article",article);
-        model.addAttribute("categoryList",categoryList);
-        model.addAttribute("tagList",tagList);
+        model.addAttribute("article", article);
+        model.addAttribute("categoryList", categoryList);
+        model.addAttribute("tagList", tagList);
         return "admin/article/articleEditInfo";
     }
 
-    @RequestMapping(value = "/update",method = RequestMethod.POST)
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
-    public ResultInfo updateArticle(Article article,int[] tags){
+    public ResultInfo updateArticle(Article article, int[] tags) {
         try {
             // 解码文章内容防止出现部分特殊字符串被转义
             article.setTitle(URLDecoder.decode(article.getTitle(), "UTF-8"));
@@ -192,5 +198,28 @@ public class EditArticle {
         }
         return new ResultInfo("success", "add article success");
     }
+
+
+    @RequestMapping(value = "/imageUpload", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> uploadImage(@RequestParam(value = "editormd-image-file", required = true) MultipartFile file) throws IOException {
+        String trueFileName = file.getOriginalFilename();
+        String suffix = trueFileName.substring(trueFileName.lastIndexOf("."));
+        String fileName = System.currentTimeMillis() + suffix;
+        String path = "/tmp/assert/pic/upload";
+        File target = new File(path, fileName);
+        if (!target.getParentFile().exists()) {
+            target.getParentFile().mkdirs();
+        }
+        target.createNewFile();
+        try {
+            file.transferTo(target);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        HashMap<String, Object> result = qiniuPicUpload.upload(target,fileName);
+        return result;
+    }
+
 
 }

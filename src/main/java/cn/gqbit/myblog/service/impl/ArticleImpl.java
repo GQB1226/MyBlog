@@ -64,6 +64,13 @@ public class ArticleImpl implements IArticleService {
         }
     }
 
+    @Override
+    public void readCountAdd(int aid) {
+        Article article=articleRepository.findArticleByAid(aid);
+        article.setReadCount(article.getReadCount()+1);
+        articleRepository.save(article);
+    }
+
 
     @Override
     public int getTotal() {

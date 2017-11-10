@@ -55,4 +55,6 @@ public interface IArticleService extends IBaseService{
 
 
     void updateArticle(Article article);
+
+    void readCountAdd(int aid);
 }

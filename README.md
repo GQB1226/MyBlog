@@ -15,8 +15,8 @@
 * 数据库也可以通过blog.sql导入
 * 后台地址localhost:8080/admin
 * 后台用户认证使用Spring Security
-
-
+* markdown使用的[Editor.md](https://github.com/pandao/editor.md)
+* 图片上传到七牛云，需要配置个人的七牛云帐号信息
 ### 目前进度
 实现基本功能：
     1. 文章的浏览添加编辑;
@@ -24,9 +24,8 @@
     3. 文章标签分类等
 
 ### TODO
-* 阅读次数的记录
 * 评论模块
 
 ### 关于
-后台管理部分参考[EumJi-blog](https://github.com/eumji025/EumJi-blog)
+后台管理样式参考[EumJi-blog](https://github.com/eumji025/EumJi-blog)
 
